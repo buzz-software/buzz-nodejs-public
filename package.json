@@ -1,0 +1,22 @@
+{
+  "name": "myapp",
+  "version": "0.0.1",
+  "description": "Express test application",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/bbalban/express-test.git"
+  },
+  "author": "Bahadir Balban",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/bbalban/express-test/issues"
+  },
+  "homepage": "https://github.com/bbalban/express-test#readme",
+  "dependencies": {
+    "express": "^4.16.2"
+  }
+}
