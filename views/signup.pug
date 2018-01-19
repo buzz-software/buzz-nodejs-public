@@ -16,8 +16,16 @@ block content
             label Password:
             input.form-control(placeholder='password',
                 required=true,
-                name='password',
-                type='password',
+                name='password1',
+                type='password1',
+                value='')
+            label Type password again:
+            input.form-control(placeholder='password',
+                required=true,
+                name='password2',
+                type='password2',
                 value='')
             button.login.btn.btn-primary(type='submit') Sign up
+          if errorMessage
+            div.alert.alert-primary(role='alert') #{errorMessage}
 

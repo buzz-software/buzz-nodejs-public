@@ -31,40 +31,59 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Passport stuff
 var session = require('express-session');
 var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
-var mongoose = require('mongoose');
+var bcrypt = require('bcrypt');
+var Model = require('./models/models.js');
 
-// Passport login Middleware
-/*
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    User.findOne({ username: username }, function(err, user) {
-      if (err) { return done(err); }
-      if (!user) {
-        return done(null, false, { message: 'Incorrect username.' });
+    Model.User.findOne({
+      where: {
+        'username': username
       }
-      if (!user.validPassword(password)) {
-        return done(null, false, { message: 'Incorrect password.' });
+    }).then(function (user) {
+      if (user == null) {
+        return done(null, false, { message: 'Incorrect credentials.' })
       }
-      return done(null, user);
-    });
+      
+      var hashedPassword = bcrypt.hashSync(password, user.salt)
+      
+      if (user.password === hashedPassword) {
+        return done(null, user)
+      }
+      
+      return done(null, false, { message: 'Incorrect credentials.' })
+    })
   }
 ));
-*/
 
+passport.serializeUser(function(user, done) {
+  done(null, user.id)
+});
+
+passport.deserializeUser(function(id, done) {
+  Model.User.findOne({
+    where: {
+      'id': id
+    }
+  }).then(function (user) {
+    if (user == null) {
+      done(new Error('Wrong user id.'))
+    }
+    
+    done(null, user)
+  })
+});
 
 app.use(session({ secret: 'bir sana bir tane bana' }));
 app.use(passport.initialize());
 app.use(passport.session());
 
-// passport config
-var Account = require('./models/account');
-passport.use(new LocalStrategy(Account.authenticate()));
-passport.serializeUser(Account.serializeUser());
-passport.deserializeUser(Account.deserializeUser());
 app.use(flash());
 
-// mongoose
-mongoose.connect('mongodb://localhost/passport_local_mongoose_express4');
+app.use(function(req, res, next) {
+    res.locals.errorMessage = req.flash('error');
+    next();
+});
 
 
 // #### All of our routes ####
