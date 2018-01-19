@@ -20,4 +20,6 @@ block content
                 type='password',
                 value='')
             button.login.btn.btn-primary(type='submit') Login
+          if error
+            div.alert.alert-primary(role='alert') #{flash.error}
 

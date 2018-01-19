@@ -5,6 +5,7 @@ var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var session = require('express-session');
+var flash = require('connect-flash');
 
 // Actual pages
 var index = require('./routes/index');
@@ -30,9 +31,10 @@ app.use(express.static(path.join(__dirname, 'public')));
 // Passport stuff
 var session = require('express-session');
 var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
-
+var mongoose = require('mongoose');
 
 // Passport login Middleware
+/*
 passport.use(new LocalStrategy(
   function(username, password, done) {
     User.findOne({ username: username }, function(err, user) {
@@ -47,9 +49,23 @@ passport.use(new LocalStrategy(
     });
   }
 ));
+*/
+
+
 app.use(session({ secret: 'bir sana bir tane bana' }));
 app.use(passport.initialize());
 app.use(passport.session());
+
+// passport config
+var Account = require('./models/account');
+passport.use(new LocalStrategy(Account.authenticate()));
+passport.serializeUser(Account.serializeUser());
+passport.deserializeUser(Account.deserializeUser());
+app.use(flash());
+
+// mongoose
+mongoose.connect('mongodb://localhost/passport_local_mongoose_express4');
+
 
 // #### All of our routes ####
 app.use('/', index);
