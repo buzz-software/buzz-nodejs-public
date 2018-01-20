@@ -2,10 +2,6 @@ var express = require('express');
 var router = express.Router();
 var passport = require('passport');
 
-
-
-//var user_model = require('../models/user.js');
-
 /* Controllers */
 var signup = require('../controllers/signup.js');
 
@@ -21,7 +17,6 @@ router.get('/login', function(req, res, next) {
 
 router.post('/login', passport.authenticate('local', { successRedirect: '/',
                                                     failureRedirect: '/login', failureFlash: true }));
-
 
 router.post('/logout', function(req, res) {
     req.logout();

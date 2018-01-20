@@ -25,6 +25,7 @@ var app = express();
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'pug');
 app.set('view options', { pretty: true }); 
+app.locals.pretty = true;
 
 // uncomment after placing your favicon in /public
 //app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
@@ -36,7 +37,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 
 // more passport stuff
-
 passport.use(new LocalStrategy(
   function(username, password, done) {
     //console.log("Username pass:", username, password);
@@ -93,8 +93,6 @@ app.use(function(req, res, next) {
     res.locals.errorMessage = req.flash('error');
     next();
 });
-
-
 
 // #### All of our routes ####
 app.use('/', index);
