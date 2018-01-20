@@ -9,7 +9,6 @@ var flash = require('connect-flash');
 
 // Actual pages
 var index = require('./routes/index');
-var users = require('./routes/users');
 
 
 // Tha app!
@@ -32,11 +31,11 @@ app.use(express.static(path.join(__dirname, 'public')));
 var session = require('express-session');
 var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt');
-var Model = require('./models/models.js');
+var models = require ('./models');
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    Model.User.findOne({
+    models.User.findOne({
       where: {
         'username': username
       }
@@ -61,7 +60,7 @@ passport.serializeUser(function(user, done) {
 });
 
 passport.deserializeUser(function(id, done) {
-  Model.User.findOne({
+  models.User.findOne({
     where: {
       'id': id
     }
@@ -88,7 +87,6 @@ app.use(function(req, res, next) {
 
 // #### All of our routes ####
 app.use('/', index);
-app.use('/users', users);
 
 
 // catch 404 and forward to error handler

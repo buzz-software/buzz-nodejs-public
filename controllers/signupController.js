@@ -1,7 +1,7 @@
+/*
 var bcrypt = require('bcrypt'),
     Model = require('../models/models.js');
 
-/*
 exports.signup = function(req, res) {
   var username = req.body.username;
   var password = req.body.password;

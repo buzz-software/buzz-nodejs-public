@@ -1,10 +1,14 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-var Account = require('../models/account');
 var flash = require('connect-flash');
 var signupController = require('../controllers/signupController.js');
 var bcrypt = require('bcrypt');
+//var Model = require('../models/models.js');
+
+var models = require('../models');
+
+//var user_model = require('../models/user.js');
 
 /* GET home page. */
 router.get('/', function (req, res) {
@@ -66,35 +70,24 @@ router.post('/signup', function(req, res, next) {
     password: hashedPassword,
   };
   console.log("All good. Calling DB.");
-  Model.User.create(newUser).then(function() {
-    console.log("Yo success!");
-    res.redirect('/');
+  models.User.create(newUser).then(function() {
+    console.log("Yo success! Now auth.");
+    passport.authenticate('local')(req, res, function () {
+        req.session.save(function (err) {
+            if (err) {
+                return next(err);
+            }
+            console.log("Yo auth done yo!");
+            res.redirect('/');
+        });
+    });
   }).catch(function(error) {
-    console.log("Database error, Yo!");
+    console.log("Database error, Yo!", error);
     req.flash('error', "Please, choose a different username.");
     res.redirect('signup');
     return;
   });
 });
 
-/*
-router.post('/signup', function(req, res, next) {
-	console.log("Sign up post route enter")
-    Account.register(new Account({ username : req.body.username }), req.body.password, function(err, account) {
-        if (err) {
-            return res.render('signup', { error : err.message });
-        }
-
-        passport.authenticate('local')(req, res, function () {
-            req.session.save(function (err) {
-                if (err) {
-                    return next(err);
-                }
-                res.redirect('/');
-        	});
-        });
-    });
-});
-*/
 
 module.exports = router;
