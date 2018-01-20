@@ -96,7 +96,7 @@ app.use(function(req, res, next) {
 
 // #### All of our routes ####
 app.use('/', index);
-
+app.use('/:username',index);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

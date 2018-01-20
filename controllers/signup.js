@@ -10,7 +10,6 @@ exports.signup = function(req, res, next) {
   
   if (!username || !password || !password2) {
     req.flash('error', "Please, fill in all the fields.");
-    console.log("Not all fields are filled yo!");
     res.redirect('signup');
     return;
   }
@@ -38,10 +37,11 @@ exports.signup = function(req, res, next) {
             if (err) {
                 return next(err);
             }
-            res.redirect('/');
+            res.redirect('/' + req.user.username);
         });
     });
   }).catch(function(error) {
+    console.log('error', error);
     req.flash('error', "Username taken, please choose a different username.");
     res.redirect('signup');
     return;
