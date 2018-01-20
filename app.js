@@ -4,11 +4,18 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-var session = require('express-session');
 var flash = require('connect-flash');
+var session = require('express-session');
 
 // Actual pages
 var index = require('./routes/index');
+
+// Passport stuff
+var session = require('express-session');
+var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
+var bcrypt = require('bcrypt');
+var models = require ('./models');
+var session = require('express-session');
 
 
 // Tha app!
@@ -27,19 +34,18 @@ app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
-// Passport stuff
-var session = require('express-session');
-var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
-var bcrypt = require('bcrypt');
-var models = require ('./models');
+
+// more passport stuff
 
 passport.use(new LocalStrategy(
   function(username, password, done) {
+    //console.log("Username pass:", username, password);
     models.User.findOne({
       where: {
         'username': username
       }
     }).then(function (user) {
+    // console.log("User:", user)
       if (user == null) {
         return done(null, false, { message: 'Incorrect credentials.' })
       }
@@ -73,9 +79,13 @@ passport.deserializeUser(function(id, done) {
   })
 });
 
+
+// These 3 has to be declared in this order or 
+// your sessions will fail and you won't know why! :)
 app.use(session({ secret: 'bir sana bir tane bana' }));
 app.use(passport.initialize());
 app.use(passport.session());
+
 
 app.use(flash());
 
@@ -83,6 +93,7 @@ app.use(function(req, res, next) {
     res.locals.errorMessage = req.flash('error');
     next();
 });
+
 
 
 // #### All of our routes ####

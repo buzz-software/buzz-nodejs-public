@@ -1,14 +1,13 @@
 var express = require('express');
 var router = express.Router();
 var passport = require('passport');
-var flash = require('connect-flash');
-var signupController = require('../controllers/signupController.js');
-var bcrypt = require('bcrypt');
-//var Model = require('../models/models.js');
 
-var models = require('../models');
+
 
 //var user_model = require('../models/user.js');
+
+/* Controllers */
+var signup = require('../controllers/signup.js');
 
 /* GET home page. */
 router.get('/', function (req, res) {
@@ -39,55 +38,8 @@ router.get('/signup', function(req, res, next) {
   res.render('signup', { title: 'Let us sign you up!' });
 });
 
-/*
-router.post('/signup', signupController.signup);
-*/
-router.post('/signup', function(req, res, next) {
-  var username = req.body.username;
-  var password = req.body.password;
-  var password2 = req.body.password2;
-  
-  if (!username || !password || !password2) {
-    req.flash('error', "Please, fill in all the fields.");
-    console.log("Not all fields are filled yo!");
-    res.redirect('signup');
-    return;
-  }
-  
-  if (password !== password2) {
-    console.log("Password2 != Password1");
-    req.flash('error', "Please, enter the same password twice.");
-    res.redirect('signup');
-    return;
-  }
-  
-  var salt = bcrypt.genSaltSync(10);
-  var hashedPassword = bcrypt.hashSync(password, salt);
-  
-  var newUser = {
-    username: username,
-    salt: salt,
-    password: hashedPassword,
-  };
-  console.log("All good. Calling DB.");
-  models.User.create(newUser).then(function() {
-    console.log("Yo success! Now auth.");
-    passport.authenticate('local')(req, res, function () {
-        req.session.save(function (err) {
-            if (err) {
-                return next(err);
-            }
-            console.log("Yo auth done yo!");
-            res.redirect('/');
-        });
-    });
-  }).catch(function(error) {
-    console.log("Database error, Yo!", error);
-    req.flash('error', "Please, choose a different username.");
-    res.redirect('signup');
-    return;
-  });
-});
+
+router.post('/signup', signup.signup);
 
 
 module.exports = router;
