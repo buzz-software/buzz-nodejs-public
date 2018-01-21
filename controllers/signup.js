@@ -29,6 +29,7 @@ exports.signup = function(req, res, next) {
     salt: salt,
     password: hashedPassword,
   };
+
   models.User.create(newUser).then(function() {
     // I can't move this to another route handler as I have to enforce
     // user creation to occur before authentication.
@@ -37,7 +38,7 @@ exports.signup = function(req, res, next) {
             if (err) {
                 return next(err);
             }
-            res.redirect('/' + req.user.username);
+            res.redirect('/u/' + req.user.username);
         });
     });
   }).catch(function(error) {

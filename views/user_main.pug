@@ -18,4 +18,5 @@ block content
           span.small Don't have an account?
           span &nbsp;
           a.small(href="/signup") Sign up now
-
+      if req.isOwner
+        p Hey owner, #{user.username} ;) ;)
