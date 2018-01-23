@@ -1,0 +1,33 @@
+extends layout
+
+block content
+  div.container
+    div.jumbotron
+      if isOwner
+        h1 Welcome to your page, #{user.username}
+      else
+        h1 Welcome to profile of, #{user.username}
+      div.col-sm-offset-4.col-sm-8
+        form(action='/u/' + user.username + '/profile', method='POST')
+          div.formgroup
+            label Title:
+            input.form-control(placeholder='Your title',
+                required=true,
+                name='title',
+                type='text',
+                value=user.profile.title)
+            label Status:
+            input.form-control(placeholder='Your status',
+                required=true,
+                name='status',
+                type='text',
+                value=user.profile.status)
+            label Short Description:
+            textarea.form-control(placeholder='Describe yourself in a few words',
+                rows='5',
+                name='desc',
+                type='text',
+                value=user.profile.desc)
+            button.login.btn.btn-primary(type='submit') Sign up
+          if errorMessage
+            div.alert.alert-primary(role='alert') #{errorMessage}

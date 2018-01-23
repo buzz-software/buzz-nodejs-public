@@ -35,42 +35,44 @@ var isOwner = function (req, res, next) {
 var signup = require('../controllers/signup.js');
 
 
+/* GET user page */
 router.get('/u/:username', isOwner, function(req, res) {
-		console.log("Hello world!");
-    res.render('user_main.pug', { user : req.user, req : req, isOwner: req.isOwner } );
+    res.render('user_main.pug', { user : req.user, isOwner: req.isOwner } );
 });
 
-/* GET home page. */
+/* GET user profile */
+router.get('/u/:username/profile', isOwner, function(req, res) {
+    res.render('user_profile.pug', { user : req.user, isOwner: req.isOwner } );
+});
+
+
+/* GET index page. */
 router.get('/', function (req, res) {
     res.render('index', { user : req.user });
-    console.log("hey yo! / here!");
 });
 
-
+/* Login */
 router.get('/login', function(req, res, next) {
   res.render('login', { title: 'Let us login!' });
-});
 
-router.post('/login', passport.authenticate('local', { successRedirect: '/',
-                                                    failureRedirect: '/login', failureFlash: true }));
+}).post('/login', passport.authenticate('local', { successRedirect: '/',
+                                                   failureRedirect: '/login', failureFlash: true }));
 
+/* Logout */
 router.post('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
-});
 
-router.get('/logout', function(req, res) {
+}).get('/logout', function(req, res) {
     req.logout();
     res.redirect('/');
 });
 
-// Route
+/* Sign up */
 router.get('/signup', function(req, res, next) {
   res.render('signup', { title: 'Let us sign you up!' });
-});
 
-
-router.post('/signup', signup.signup);
+}).post('/signup', signup.signup);
 
 
 

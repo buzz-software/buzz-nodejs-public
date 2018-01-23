@@ -4,12 +4,13 @@ block content
   div.container
     div.jumbotron
       h1 Hello!
-      if user
+      if isOwner
         p Welcome, #{user.username}
-        p
-          a.small(href="profile") Edit my profile
+          a.small(href="/u/" + user.username + "/profile") Edit my profile
         form(action='/logout', method='POST')
           button.btn.btn-default(type="submit") Logout
+      else if user
+        p The page of #{user.username}
       else
         p Welcome to my app, ready to get started?
         p
@@ -18,5 +19,5 @@ block content
           span.small Don't have an account?
           span &nbsp;
           a.small(href="/signup") Sign up now
-      if req.isOwner
+      if isOwner
         p Hey owner, #{user.username} ;) ;)
