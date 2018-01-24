@@ -2,48 +2,37 @@
 
 'use strict';
 module.exports = (sequelize, DataTypes) => {
-  var User = sequelize.define('User', {
+  var Profile = sequelize.define('Profile', {
     id: {
       type: DataTypes.UUID,
-      defaultValue: DataTypes.UUIDV4,
-      
+      defaultValue: DataTypes.UUIDV4, 
       allowNull: false,
       primaryKey: true
     },
-    username: {
+    title: {
       type: DataTypes.STRING,
+      allowNull: true
+    },
+    description: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    status: {
+      type: DataTypes.STRING,
+      allowNull: true
+    },
+    isactive: {
+      type: DataTypes.BOOLEAN,
       allowNull: true,
-      unique: true
-    },
-    firstname: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    lastname: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    password: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    salt: {
-      type: DataTypes.STRING,
-      allowNull: true
-    },
-    email: {
-      type: DataTypes.STRING,
-      allowNull: true,
-      unique: true
-    },
-
+      defaultValue: true
+    }
   }, {
     classMethods: {
       associate: function(models) {
-        User.hasOne(models.Profile);
+        Profile.belongsTo(models.User);
         // more associations can be defined here
       }
     }
   });
-  return User;
+  return Profile;
 };

@@ -24,10 +24,12 @@ exports.signup = function(req, res, next) {
   var salt = bcrypt.genSaltSync(10);
   var hashedPassword = bcrypt.hashSync(password, salt);
   
+  var newProfile = { title: null, description: null, status: null, isActive: true };
   var newUser = {
     username: username,
     salt: salt,
     password: hashedPassword,
+    /*profileid: newProfile,*/
   };
 
   models.User.create(newUser).then(function() {
