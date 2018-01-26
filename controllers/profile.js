@@ -12,7 +12,6 @@ exports.post = function(req, res) {
   
   var user = req.user;
 
-  console.log("user, title, status, desc", user, title, status, description);
   m.User.findById(req.user.id).then(u => {
     u.getProfile().then (p => {
       p.update({"title": title, "status" : status, "description" : description }).then(result => {
