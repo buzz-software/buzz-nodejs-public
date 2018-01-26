@@ -36,14 +36,22 @@ var signup = require('../controllers/signup.js');
 var profile = require('../controllers/profile.js');
 
 
-/* GET user page */
-router.get('/u/:username', isOwner, function(req, res) {
-    res.render('user_main.pug', { user : req.user, isOwner: req.isOwner } );
+/* Post routes */
+router.get('/u/:username/new_post', isAuthenticated, isOwner, function (req, res) {
+	res.render("new_post", { user : req.user });
 });
 
+router.post('/u/:username/new_post', isAuthenticated, isOwner, profile.create_post);
+router.get('/u/:username/:post_title/show_post', isAuthenticated, isOwner, profile.show_post);
+router.get('/u/:username/:post_title/edit_post', isAuthenticated, isOwner, profile.edit_post);
+router.put('/u/:username/:post_title/edit_post', isAuthenticated, isOwner, profile.update_post);
+
+/* GET user main page */
+router.get('/u/:username', isOwner, profile.user_main); 
+
 /* GET user profile */
-router.get('/u/:username/profile', isOwner, profile.get);
-router.post('/u/:username/profile', isOwner, profile.post);
+router.get('/u/:username/profile', isAuthenticated, isOwner, profile.edit);
+router.post('/u/:username/profile', isOwner, profile.update);
 /*
 router.get('/u/:username/profile', isOwner, function(req, res) {
     res.render('user_profile.pug', { user : req.user, isOwner: req.isOwner } );
@@ -59,7 +67,7 @@ router.get('/', function (req, res) {
 router.get('/login', function(req, res, next) {
   res.render('login', { title: 'Let us login!' });
 
-}).post('/login', passport.authenticate('local', { successRedirect: '/',
+}).post('/login', passport.authenticate('local', { successRedirect: '/:username',
                                                    failureRedirect: '/login', failureFlash: true }));
 
 /* Logout */

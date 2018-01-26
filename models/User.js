@@ -41,6 +41,7 @@ module.exports = (sequelize, DataTypes) => {
 
   User.associate = function(models) {
     User.Profile = User.hasOne(models.Profile);
+    User.Posts = User.hasMany(models.Post);
   }
   return User;
 };

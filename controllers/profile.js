@@ -3,7 +3,7 @@ var m = require('../models');
 var passport = require('passport');
 var flash = require('connect-flash');
 
-exports.post = function(req, res) {
+exports.update = function(req, res) {
 
   // Extract form data
   var title = req.body.title;
@@ -23,11 +23,68 @@ exports.post = function(req, res) {
   return;
 }
 
-exports.get = function(req, res) {
+exports.user_main = function(req, res) {
+  m.User.findOne({
+    where: {
+      'username': req.params.username
+    }
+  }).then(o => {
+    o.getProfile().then (p => {
+      o.getPosts({
+        limit: 3,
+        order: 'createdAt, DESC',
+        attributes: ['id', 'title']
+      }).then(posts => {
+        res.render("user_main", { user : req.user, owner: o, posts: posts, isOwner: req.isOwner, profile : p } );
+        return;
+      });
+    });
+  });
+}
+
+// POST new post
+exports.create_post = function(req, res) {
+  var title = req.body.title;
+  var body = req.body.body;
+
+  newPost = { title:title, body:body };
+
+  // find authorized user
   m.User.findById(req.user.id).then(u => {
-    u.getProfile().then (p => {
-        res.render("user_profile", { user : req.user, isOwner: req.isOwner, profile : p } );
+    // create a post for this user.
+    u.createPost(newPost).then( p => {
+      res.redirect('/u/'+ req.user.username);
+    });
+  }
+}
+
+// GET existing post
+exports.show_post = function(req, res) {
+  m.User.findById(req.user.id).then(u => {
+    u.getPost({ where: { 'title': req.params.post_title } }).then (p => {
+        res.render("show_post", { user : req.user, owner: u, post : p } );
         return;
     });
   });
 }
+
+// Get existing post to edit
+exports.edit_post = function(req, res) {
+  m.User.findById(req.user.id).then(u => {
+    u.getPost({ where: { 'title': req.params.post_title } }).then (p => {
+        res.render("edit_post", { user : req.user, owner: u, post : p } );
+        return;
+    });
+  });
+}
+
+// PUT existing post
+exports.update_post = function(req, res) {
+  m.User.findById(req.user.id).then(u => {
+    u.getPost({ where: { 'title': req.params.post_title } }).then (p => {
+        res.redirect('/u/' + req.user.username + '/' + req.params.post_title);
+        return;
+    });
+  });
+}
+

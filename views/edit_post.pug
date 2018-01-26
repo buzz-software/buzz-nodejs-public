@@ -1,0 +1,25 @@
+extends layout
+
+block content
+  div.container
+    div.jumbotron
+      if isOwner
+        h1 Welcome to your page, #{user.username}
+      else
+        h1 Welcome to profile of, #{user.username}
+      div.col-sm-offset-4.col-sm-8
+        form(action='/u/' + user.username + '/' + post.title, method='PUT')
+          div.formgroup
+            label Title:
+            input.form-control(placeholder='A compelling title',
+                name='title',
+                type='text',
+                value= post.title)
+            label Post:
+            textarea.form-control(placeholder='Write your post here...',
+                rows='12',
+                name='body',
+                type='text')= post.body
+            button.login.btn.btn-primary(type='submit') Post
+          if errorMessage
+            div.alert.alert-primary(role='alert') #{errorMessage}

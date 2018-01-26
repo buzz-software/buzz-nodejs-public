@@ -1,0 +1,9 @@
+extends layout
+
+block content
+  div.container
+    div.jumbotron
+      h1 #{post.title}
+      p #{post.body}
+      p
+        a.small(href="/u/" + user.username + "/" + post.title + "/edit_post") Edit post

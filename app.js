@@ -17,7 +17,6 @@ var bcrypt = require('bcrypt');
 var models = require ('./models');
 var session = require('express-session');
 
-
 // Tha app!
 var app = express();
 
@@ -39,13 +38,12 @@ app.use(express.static(path.join(__dirname, 'public')));
 // more passport stuff
 passport.use(new LocalStrategy(
   function(username, password, done) {
-    //console.log("Username pass:", username, password);
     models.User.findOne({
       where: {
         'username': username
       }
     }).then(function (user) {
-    // console.log("User:", user)
+
       if (user == null) {
         return done(null, false, { message: 'Incorrect credentials.' })
       }
@@ -97,6 +95,7 @@ app.use(function(req, res, next) {
 // #### All of our routes ####
 app.use('/', index);
 app.use('/:username',index);
+
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
