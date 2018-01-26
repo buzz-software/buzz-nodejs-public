@@ -33,6 +33,7 @@ var isOwner = function (req, res, next) {
 
 /* Controllers */
 var signup = require('../controllers/signup.js');
+var profile = require('../controllers/profile.js');
 
 
 /* GET user page */
@@ -41,10 +42,13 @@ router.get('/u/:username', isOwner, function(req, res) {
 });
 
 /* GET user profile */
+router.get('/u/:username/profile', isOwner, profile.get);
+router.post('/u/:username/profile', isOwner, profile.post);
+/*
 router.get('/u/:username/profile', isOwner, function(req, res) {
     res.render('user_profile.pug', { user : req.user, isOwner: req.isOwner } );
 });
-
+*/
 
 /* GET index page. */
 router.get('/', function (req, res) {

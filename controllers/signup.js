@@ -24,15 +24,10 @@ exports.signup = function(req, res, next) {
   var salt = bcrypt.genSaltSync(10);
   var hashedPassword = bcrypt.hashSync(password, salt);
   
-  var newProfile = { title: null, description: null, status: null, isActive: true };
-  var newUser = {
-    username: username,
-    salt: salt,
-    password: hashedPassword,
-    /*profileid: newProfile,*/
-  };
+  var newProfile = { title: "Engineer", description: "Diehard", status: "I am trying hard here", isActive: true };
+  var newUser = {  username: username, salt: salt, password: hashedPassword, Profile: newProfile };
 
-  models.User.create(newUser).then(function() {
+  models.User.create(newUser, { include: [ models.User.Profile ] }).then(function() {
     // I can't move this to another route handler as I have to enforce
     // user creation to occur before authentication.
     passport.authenticate('local')(req, res, function () {

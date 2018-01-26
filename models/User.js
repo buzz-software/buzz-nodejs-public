@@ -37,13 +37,10 @@ module.exports = (sequelize, DataTypes) => {
       unique: true
     },
 
-  }, {
-    classMethods: {
-      associate: function(models) {
-        User.hasOne(models.Profile);
-        // more associations can be defined here
-      }
-    }
   });
+
+  User.associate = function(models) {
+    User.Profile = User.hasOne(models.Profile);
+  }
   return User;
 };

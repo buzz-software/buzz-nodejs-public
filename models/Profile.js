@@ -26,13 +26,9 @@ module.exports = (sequelize, DataTypes) => {
       allowNull: true,
       defaultValue: true
     }
-  }, {
-    classMethods: {
-      associate: function(models) {
-        Profile.belongsTo(models.User);
-        // more associations can be defined here
-      }
-    }
   });
+  Profile.associate = function(models) {
+    Profile.belongsTo(models.User);
+  }
   return Profile;
 };

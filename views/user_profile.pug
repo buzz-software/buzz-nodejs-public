@@ -12,22 +12,19 @@ block content
           div.formgroup
             label Title:
             input.form-control(placeholder='Your title',
-                required=true,
                 name='title',
                 type='text',
-                value=user.profile.title)
+                value= profile.title)
             label Status:
             input.form-control(placeholder='Your status',
-                required=true,
                 name='status',
                 type='text',
-                value=user.profile.status)
+                value= profile.status)
             label Short Description:
             textarea.form-control(placeholder='Describe yourself in a few words',
                 rows='5',
-                name='desc',
-                type='text',
-                value=user.profile.desc)
-            button.login.btn.btn-primary(type='submit') Sign up
+                name='description',
+                type='text')= profile.description
+            button.login.btn.btn-primary(type='submit') Update
           if errorMessage
             div.alert.alert-primary(role='alert') #{errorMessage}
