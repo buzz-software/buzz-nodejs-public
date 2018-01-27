@@ -42,9 +42,9 @@ router.get('/u/:username/new_post', isAuthenticated, isOwner, function (req, res
 });
 
 router.post('/u/:username/new_post', isAuthenticated, isOwner, profile.create_post);
-router.get('/u/:username/:post_title/show_post', isAuthenticated, isOwner, profile.show_post);
-router.get('/u/:username/:post_title/edit_post', isAuthenticated, isOwner, profile.edit_post);
-router.put('/u/:username/:post_title/edit_post', isAuthenticated, isOwner, profile.update_post);
+router.get('/u/:username/:post_slug', isAuthenticated, isOwner, profile.show_post);
+router.get('/u/:username/:post_slug/edit_post', isAuthenticated, isOwner, profile.edit_post);
+router.post('/u/:username/:post_slug/edit_post', isAuthenticated, isOwner, profile.update_post);
 
 /* GET user main page */
 router.get('/u/:username', isOwner, profile.user_main); 

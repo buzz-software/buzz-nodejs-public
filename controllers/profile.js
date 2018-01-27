@@ -2,6 +2,7 @@ var bcrypt = require('bcrypt');
 var m = require('../models');
 var passport = require('passport');
 var flash = require('connect-flash');
+var slug = require('slug');
 
 exports.update = function(req, res) {
 
@@ -42,7 +43,7 @@ exports.user_main = function(req, res) {
       o.getPosts({
         limit: 3,
         order: [['createdAt', 'DESC']],
-        attributes: ['id', 'title']
+        attributes: ['id', 'title', 'slug']
       }).then(posts => {
         console.log(posts);
         res.render("user_main", { user : req.user, owner: o, posts: posts, isOwner: req.isOwner, profile : p } );
@@ -56,8 +57,10 @@ exports.user_main = function(req, res) {
 exports.create_post = function(req, res) {
   var title = req.body.title;
   var body = req.body.body;
+  console.log("title:",title);
+  console.log("slug:",slug(title));
 
-  newPost = { title:title, body:body };
+  newPost = { title:title, body:body, slug: slug(title) };
 
   // find authorized user
   m.User.findById(req.user.id).then(u => {
@@ -71,7 +74,9 @@ exports.create_post = function(req, res) {
 // GET existing post
 exports.show_post = function(req, res) {
   m.User.findById(req.user.id).then(u => {
-    u.getPost({ where: { 'title': req.params.post_title } }).then (p => {
+    u.getPosts({ where: { 'slug' : req.params.post_slug } }).then (p => {
+      p = p[0]; // remove post from posts array.
+      console.log("user post filter with slug", p);
         res.render("show_post", { user : req.user, owner: u, post : p } );
         return;
     });
@@ -81,7 +86,8 @@ exports.show_post = function(req, res) {
 // Get existing post to edit
 exports.edit_post = function(req, res) {
   m.User.findById(req.user.id).then(u => {
-    u.getPost({ where: { 'title': req.params.post_title } }).then (p => {
+    u.getPosts({ where: { 'slug': req.params.post_slug } }).then (p => {
+        p = p[0]// remove post from posts array.
         res.render("edit_post", { user : req.user, owner: u, post : p } );
         return;
     });
@@ -91,9 +97,17 @@ exports.edit_post = function(req, res) {
 // PUT existing post
 exports.update_post = function(req, res) {
   m.User.findById(req.user.id).then(u => {
-    u.getPost({ where: { 'title': req.params.post_title } }).then (p => {
-        res.redirect('/u/' + req.user.username + '/' + req.params.post_title);
-        return;
+    u.getPosts({ where: { 'slug': req.params.post_slug } }).then (p => {
+        p = p[0]; // remove post from posts array.
+        var title = req.body.title;
+        var body = req.body.body;
+        //console.log("Title", title);
+        var post_slug = slug(title);
+        //console.log("post slug", post_slug);
+        p.update({ title:title, body:body, slug: post_slug }).then(result => {
+          res.redirect('/u/' + req.user.username + '/' + post_slug);
+          return;
+        });
     });
   });
 }

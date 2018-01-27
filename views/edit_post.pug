@@ -8,14 +8,14 @@ block content
       else
         h1 Welcome to profile of, #{user.username}
       div.col-sm-offset-4.col-sm-8
-        form(action='/u/' + user.username + '/' + post.title, method='PUT')
+        form(action='/u/' + user.username + '/' + post.slug + "/edit_post", method='POST')
           div.formgroup
             label Title:
             input.form-control(placeholder='A compelling title',
                 name='title',
                 type='text',
                 value= post.title)
-            label Post:
+            label Contents:
             textarea.form-control(placeholder='Write your post here...',
                 rows='12',
                 name='body',
