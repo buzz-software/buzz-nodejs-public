@@ -21,7 +21,7 @@ module.exports = (sequelize, DataTypes) => {
   });
 
   Post.associate = function(models) {
-    Post.author = Post.belongsTo(models.User, {as: 'Author'});
+    Post.user = Post.belongsTo(models.User);
   }
   return Post;
 };

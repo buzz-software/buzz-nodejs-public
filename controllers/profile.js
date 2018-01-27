@@ -23,6 +23,15 @@ exports.update = function(req, res) {
   return;
 }
 
+exports.edit = function(req, res) { 
+  m.User.findById(req.user.id).then(u => {
+    u.getProfile().then (p => {
+      res.render("edit_profile",{ user: req.user, profile: p });
+      return;
+    });
+  });
+}
+
 exports.user_main = function(req, res) {
   m.User.findOne({
     where: {
@@ -32,9 +41,10 @@ exports.user_main = function(req, res) {
     o.getProfile().then (p => {
       o.getPosts({
         limit: 3,
-        order: 'createdAt, DESC',
+        order: [['createdAt', 'DESC']],
         attributes: ['id', 'title']
       }).then(posts => {
+        console.log(posts);
         res.render("user_main", { user : req.user, owner: o, posts: posts, isOwner: req.isOwner, profile : p } );
         return;
       });
@@ -55,7 +65,7 @@ exports.create_post = function(req, res) {
     u.createPost(newPost).then( p => {
       res.redirect('/u/'+ req.user.username);
     });
-  }
+  });
 }
 
 // GET existing post
