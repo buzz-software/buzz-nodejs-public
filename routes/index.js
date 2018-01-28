@@ -36,6 +36,10 @@ var signup = require('../controllers/signup.js');
 var profile = require('../controllers/profile.js');
 
 
+/* GET user profile */
+router.get('/u/:username/profile', isAuthenticated, isOwner, profile.edit);
+router.post('/u/:username/profile', isOwner, profile.update);
+
 /* Post routes */
 router.get('/u/:username/new_post', isAuthenticated, isOwner, function (req, res) {
 	res.render("new_post", { user : req.user });
@@ -49,9 +53,6 @@ router.post('/u/:username/:post_slug/edit_post', isAuthenticated, isOwner, profi
 /* GET user main page */
 router.get('/u/:username', isOwner, profile.user_main); 
 
-/* GET user profile */
-router.get('/u/:username/profile', isAuthenticated, isOwner, profile.edit);
-router.post('/u/:username/profile', isOwner, profile.update);
 /*
 router.get('/u/:username/profile', isOwner, function(req, res) {
     res.render('user_profile.pug', { user : req.user, isOwner: req.isOwner } );
