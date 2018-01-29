@@ -42,7 +42,7 @@ router.post('/u/:username/profile', isOwner, profile.update);
 
 /* Post routes */
 router.get('/u/:username/new_post', isAuthenticated, isOwner, function (req, res) {
-	res.render("new_post", { user : req.user });
+	res.render("new_post", { user : req.user, isOwner: req.isOwner });
 });
 
 router.post('/u/:username/new_post', isAuthenticated, isOwner, profile.create_post);
