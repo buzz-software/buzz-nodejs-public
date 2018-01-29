@@ -18,7 +18,8 @@ block content
             textarea.form-control(placeholder='Write your post here...',
                 rows='12',
                 name='body',
-                type='text')
+                type='text',
+                id='editor')
             button.login.btn.btn-primary(type='submit') Post
           if errorMessage
             div.alert.alert-primary(role='alert') #{errorMessage}
