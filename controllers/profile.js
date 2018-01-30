@@ -33,6 +33,26 @@ exports.edit = function(req, res) {
   });
 }
 
+exports.feed = function(req, res) {
+  m.User.findOne({
+    where: {
+      'username': req.params.username
+    }
+  }).then(o => {
+    o.getProfile().then (p => {
+      o.getPosts({
+        limit: 3,
+        order: [['createdAt', 'DESC']],
+        attributes: ['id', 'title', 'body', 'slug']
+      }).then(posts => {
+        console.log(posts);
+        res.render("feed", { user : req.user, owner: o, posts: posts, isOwner: req.isOwner, profile : p } );
+        return;
+      });
+    });
+  });
+}
+
 exports.user_main = function(req, res) {
   m.User.findOne({
     where: {
@@ -67,6 +87,24 @@ exports.create_post = function(req, res) {
     // create a post for this user.
     u.createPost(newPost).then( p => {
       res.redirect('/u/'+ req.user.username);
+    });
+  });
+}
+
+// POST new post
+exports.create_post_in_feed = function(req, res) {
+  var title = req.body.title;
+  var body = req.body.body;
+  console.log("title:",title);
+  console.log("slug:",slug(title));
+
+  newPost = { title:title, body:body, slug: slug(title) };
+
+  // find authorized user
+  m.User.findById(req.user.id).then(u => {
+    // create a post for this user.
+    u.createPost(newPost).then( p => {
+      res.redirect('/u/'+ req.user.username + '/feed');
     });
   });
 }
