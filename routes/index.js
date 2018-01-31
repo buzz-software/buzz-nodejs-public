@@ -3,95 +3,76 @@ var router = express.Router();
 var passport = require('passport');
 
 
-// Auth checker
-var isAuthenticated = function (req, res, next) {
-	if (req.isAuthenticated()) {
-		//console.log("is authenticated");
-    	return next()
-	}
-	else {
-		//console.log("not authenticated");
-	}
-	req.flash('error', 'You have to be logged in to access the page.')
-	res.redirect('/')
-}
 
 
-// Crude authorization: Add indicator: Is this guy the owner of this page?
-// This doesn't stop or redirect the request. Just adds permission.
-var isOwner = function (req, res, next) {
-	if (req.isAuthenticated()) {
-		// Is the username requested in url parameters matching the user making the request?
-	    if (req.user.username == req.params.username) {
-	    	req.isOwner = true;
-	    } else {
-	    	req.isOwner = false;
-	    }
-	}
-    next();
-}
-
-/* Controllers */
-var signup = require('../controllers/signup.js');
-var profile = require('../controllers/profile.js');
 
 
-/* GET user profile */
-router.get('/u/:username/profile', isAuthenticated, isOwner, profile.edit);
-router.post('/u/:username/profile', isOwner, profile.update);
+router.get('/start', landing.get_start);				// Landing
+router.get('/discover', discover.get);					// Discover
+router.get('/d/search', discover.search); 				// Discover Search
+router.get('/l/search', landing.search); 				// Landing Search
+router.get('/results', search.results);					// Search results
 
-router.get('/u/:username/feed', isAuthenticated, isOwner, profile.feed); 
 
-/* Post routes */
-router.get('/u/:username/new_post', isAuthenticated, isOwner, function (req, res) {
-	res.render("new_post", { user : req.user, isOwner: req.isOwner });
-});
+// APIs
+router.get('api/u/:username/notifs', notifs.get);
 
-// Temp
-router.post('/u/:username/new_post_feed', isAuthenticated, isOwner, profile.create_post_in_feed);
 
-router.post('/u/:username/new_post', isAuthenticated, isOwner, profile.create_post);
-router.get('/u/:username/:post_slug', isAuthenticated, isOwner, profile.show_post);
-router.get('/u/:username/:post_slug/edit_post', isAuthenticated, isOwner, profile.edit_post);
-router.post('/u/:username/:post_slug/edit_post', isAuthenticated, isOwner, profile.update_post);
+// User Settings routes
+router.get('/u/:username/s/profile', user.get_settings_profile);	
+router.get('/u/:username/s/account', user.get_settings_account);
+router.get('/u/:username/s/notifs', user.get_settings_notifs);	
+router.get('/u/:username/s/blogs', user.get_settings_blogs);	
+router.get('/u/:username/s/prefs', user.get_settings_prefs);
 
-/* GET user main page */
-router.get('/u/:username', isOwner, profile.user_main); 
+// Onboarding for new company
+router.get('/start/new_company', landing.get_new_company);
+router.get('/start/:company/pick_plan', landing.get_pick_plan);
+router.get('/start/:company/enter_cc', landing.get_enter_cc);
+router.get('/start/:company/setup_profile', landing.get_setup_profile);
+router.get('/start/:company/invite_authors', landing.get_invite_authors);
 
-/*
-router.get('/u/:username/profile', isOwner, function(req, res) {
-    res.render('user_profile.pug', { user : req.user, isOwner: req.isOwner } );
-});
-*/
+// Onboarding for individuals
+router.get('/start/new_user', landing.get_new_user);
+router.get('/start/:user/pick_topics', landing.get_pick_topics);
+router.get('/start/:user/pick_blogs', landing.get_pick_blogs);
 
-/* GET index page. */
-router.get('/', function (req, res) {
-    res.render('index', { user : req.user });
-});
 
-/* Login */
-router.get('/login', function(req, res, next) {
-  res.render('login', { title: 'Let us login!' });
+router.get('/u/:username/feed', user.get_feed);		// Feed for logged in user.
+router.get('/u/:username/notifications');				// Notifications for user.
 
-}).post('/login', passport.authenticate('local', { successRedirect: '/:username',
-                                                   failureRedirect: '/login', failureFlash: true }));
+router.get('/login', login.login);
+router.get('/u/:user/', user.get_profile);		// Public profile page
+router.get('/u/:user/invite', user.get_invite_friends);		// User inviting friends
 
-/* Logout */
-router.post('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
+router.get('/u/:company/invite', company.get_invite_authors);	// Company inviting authors
 
-}).get('/logout', function(req, res) {
-    req.logout();
-    res.redirect('/');
-});
 
-/* Sign up */
-router.get('/signup', function(req, res, next) {
-  res.render('signup', { title: 'Let us sign you up!' });
+router.get('/c/:company/i/:invite', company.get_invite_signup);	// Sign up as invitee
+router.get('/c/:company/i/:invite', company.get_accept_join);	// Join company as invitee.
 
-}).post('/signup', signup.signup);
+router.get('/c/:company', company.get_home);	// Company public home page.
 
+// Company settings routes
+router.get('/c/:company/s/stories', company.get_settings_stories);	// Company story settings
+router.get('/c/:company/s/authors', company.get_settings_authors);	// Author settings
+router.get('/c/:company/s/topics', company.get_settings_topics);	// Topic settings
+router.get('/c/:company/s/social', company.get_settings_social);	// Social settings
+router.get('/c/:company/s/products', company.get_settings_products);	// Product settings
+
+// Company blog post routes
+router.get('/c/:company/:post_slug');					// Post from a community
+router.get('/c/:company/new_post');						// Create new post
+
+// Company layout routes
+router.get('/c/:company/l/layout', company.get_layout); // Setup how posts lay out
+
+
+router.get('/c/:company/new_page', company.create_page); // Setup how posts lay out
+
+router.get('/c/:company/:page_slug', company.show_page);
+router.get('/c/:company/:page_slug/edit_page', company.edit_page);
+router.post('/u/:company/:post_slug/edit_page', company.update_page);
 
 
 module.exports = router;

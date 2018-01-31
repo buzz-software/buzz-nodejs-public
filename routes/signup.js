@@ -9,7 +9,7 @@ var signup = require('../controllers/signup.js');
 
 /* Login */
 router.get('/login', function(req, res, next) {
-  res.render('login', { title: 'Let us login!' });
+  res.render('login');
 
 }).post('/login', passport.authenticate('local', { successRedirect: '/:username',
                                                    failureRedirect: '/login', failureFlash: true }));

@@ -1,0 +1,30 @@
+extends layout
+
+block content
+  div.container
+    div.jumbotron
+      h1 Lets sign you up mate.
+      div.col-sm-offset-4.col-sm-8
+        form(action='/signup', method='POST')
+          div.formgroup
+            label Username:
+            input.form-control(placeholder='username',
+                required=true,
+                name='username',
+                type='text',
+                value='')
+            label Password:
+            input.form-control(placeholder='password',
+                required=true,
+                name='password',
+                type='password',
+                value='')
+            label Type password again:
+            input.form-control(placeholder='password',
+                required=true,
+                name='password2',
+                type='password',
+                value='')
+            button.login.btn.btn-primary(type='submit') Sign up
+          if errorMessage
+            div.alert.alert-primary(role='alert') #{errorMessage}
