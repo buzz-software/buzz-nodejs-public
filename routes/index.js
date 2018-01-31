@@ -3,26 +3,21 @@ var router = express.Router();
 var passport = require('passport');
 
 
-
-
-
-
 router.get('/start', landing.get_start);				// Landing
 router.get('/discover', discover.get);					// Discover
 router.get('/d/search', discover.search); 				// Discover Search
 router.get('/l/search', landing.search); 				// Landing Search
 router.get('/results', search.results);					// Search results
 
-
 // APIs
 router.get('api/u/:username/notifs', notifs.get);
 
 
 // User Settings routes
-router.get('/u/:username/s/profile', user.get_settings_profile);	
+router.get('/u/:username/s/profile', user.get_settings_profile);
 router.get('/u/:username/s/account', user.get_settings_account);
-router.get('/u/:username/s/notifs', user.get_settings_notifs);	
-router.get('/u/:username/s/blogs', user.get_settings_blogs);	
+router.get('/u/:username/s/notifs', user.get_settings_notifs);
+router.get('/u/:username/s/blogs', user.get_settings_blogs);
 router.get('/u/:username/s/prefs', user.get_settings_prefs);
 
 // Onboarding for new company
@@ -37,7 +32,6 @@ router.get('/start/new_user', landing.get_new_user);
 router.get('/start/:user/pick_topics', landing.get_pick_topics);
 router.get('/start/:user/pick_blogs', landing.get_pick_blogs);
 
-
 router.get('/u/:username/feed', user.get_feed);		// Feed for logged in user.
 router.get('/u/:username/notifications');				// Notifications for user.
 
@@ -46,7 +40,6 @@ router.get('/u/:user/', user.get_profile);		// Public profile page
 router.get('/u/:user/invite', user.get_invite_friends);		// User inviting friends
 
 router.get('/u/:company/invite', company.get_invite_authors);	// Company inviting authors
-
 
 router.get('/c/:company/i/:invite', company.get_invite_signup);	// Sign up as invitee
 router.get('/c/:company/i/:invite', company.get_accept_join);	// Join company as invitee.
@@ -66,7 +59,6 @@ router.get('/c/:company/new_post');						// Create new post
 
 // Company layout routes
 router.get('/c/:company/l/layout', company.get_layout); // Setup how posts lay out
-
 
 router.get('/c/:company/new_page', company.create_page); // Setup how posts lay out
 
