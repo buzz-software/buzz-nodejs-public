@@ -9,19 +9,15 @@ var base = require('../controllers/base.js');
 var user = require('../controllers/user.js');
 var onboard = require('../controllers/onboard.js');
 
+// Base pages for entire app
 router.get('/start', base.show_landing);				// Landing
 router.get('/discover', base.show_discover);					// Discover
 router.get('/search', base.show_search); 				    // Search
 router.get('/results', base.show_results);					// Search results
 
-// User Settings routes
-router.get('/u/:username/s/profile', user.show_settings_profile);
-router.get('/u/:username/s/account', user.show_settings_account);
-router.get('/u/:username/s/notifs', user.show_settings_notifs);
-router.get('/u/:username/s/blogs', user.show_settings_blogs);
-router.get('/u/:username/s/prefs', user.show_settings_prefs);
+// Onboarding routes
 
-// Onboarding for new company
+// Onboard for company
 router.get('/o/company_signup', onboard.show_company_signup);
 router.get('/o/:company/pick_plan', onboard.show_company_pick_plan);
 router.get('/o/:company/enter_cc', onboard.show_company_enter_cc);
@@ -35,19 +31,26 @@ router.get('/o/user_signup', onboard.show_user_signup);
 router.get('/o/:company/i/:invite', onboard.show_user_signup_company_invite);	// Sign up and get added to company.
 router.get('/o/:user/i/:invite', onboard.show_user_signup_friend_invite);	// Sign up and become friends with inviter
 
+// Onboard user later steps
 router.get('/o/:username/pick_topics', onboard.show_user_pick_topics);
 router.get('/o/:username/pick_blogs', onboard.show_user_pick_blogs);
-
-router.get('/u/:username/feed', user.show_feed);		// Feed for logged in user.
-router.get('/u/:username/notifications', user.show_notifs);		// Notifications for user.
-
-// APIs
-router.get('api/u/:username/notifs', user.fetch_notifs);
-
 
 router.get('/login', onboard.show_login);
 
 // User
+router.get('/u/:username/feed', user.show_feed);		// Feed for logged in user.
+router.get('/u/:username/notifications', user.show_notifs);		// Notifications for user.
+
+// User Settings routes
+router.get('/u/:username/s/profile', user.show_settings_profile);
+router.get('/u/:username/s/account', user.show_settings_account);
+router.get('/u/:username/s/notifs', user.show_settings_notifs);
+router.get('/u/:username/s/blogs', user.show_settings_blogs);
+router.get('/u/:username/s/prefs', user.show_settings_prefs);
+
+// APIs
+router.get('/api/u/:username/notifs', user.fetch_notifs);
+
 router.get('/u/:user/', user.show_profile);		// Public profile page
 router.get('/u/:user/invite', user.show_invite_friends);	// User inviting friends
 
