@@ -8,7 +8,7 @@ var flash = require('connect-flash');
 var session = require('express-session');
 
 // Actual pages
-var index = require('./routes/index');
+var main_routes = require('./routes/main');
 
 // Passport stuff
 var session = require('express-session');
@@ -93,9 +93,7 @@ app.use(function(req, res, next) {
 });
 
 // #### All of our routes ####
-app.use('/', index);
-app.use('/:username',index);
-
+app.use('/', main_routes);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
