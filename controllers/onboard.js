@@ -1,10 +1,25 @@
 
-
+/*
+ * Onboarding module for both companies and users.
+ *
+ * Handles sign up of companies, users, also users
+ * who sign up via a company join invite, or invite of a friend.
+ * 
+ */
+urls = require("../routes/urls/onboard.js");
 
 // Render Step 1: New company form
 exports.show_company_signup = function(req, res, next) {
-	res.render('landing');
+	var url = urls.signup;
+
+	res.render('placeholder', { url : url } );
 }
+
+// Render Step 1: New company form
+exports.create_company = function(req, res, next) {
+	res.redirect(urls.pick_plan);
+}
+
 
 // Create new company
 //
@@ -14,7 +29,9 @@ exports.show_company_signup = function(req, res, next) {
 
 // Render Step 2: Pick a plan
 exports.show_company_pick_plan = function(req, res, next) {
-	res.render('pick_plan');
+	var url = urls.pick_plan;
+
+	res.render('placeholder', { url : url } );
 }
 
 // Create plan and populate it. Redirect to Step 3.
@@ -25,7 +42,9 @@ exports.show_company_pick_plan = function(req, res, next) {
 
 // Render Step 3: Get cc info
 exports.show_company_enter_cc = function(req, res, next) {
-	res.render('enter_cc');
+	var url = urls.enter_cc;
+
+	res.render('placeholder', { url : url } );
 }
 
 // Process cc info.
