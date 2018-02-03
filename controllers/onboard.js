@@ -24,12 +24,6 @@ exports.create_company = function(req, res, next) {
 }
 
 
-// Create new company
-//
-// Post function goes here.
-//
-// Redirect to step 2.
-
 // Render Step 2: Pick a plan
 exports.show_company_pick_plan = function(req, res, next) {
 
@@ -41,7 +35,7 @@ exports.show_company_pick_plan = function(req, res, next) {
 }
 
 // Create new Stripe plan
-exports.create_plan = function(req, res, next) {
+exports.create_company_plan = function(req, res, next) {
 	var company = req.params.company;
 
 	var next_url = "/o" + "/" + company + "/enter_cc";
@@ -51,12 +45,6 @@ exports.create_plan = function(req, res, next) {
 	res.redirect(next_url);
 }
 
-// Create plan and populate it. Redirect to Step 3.
-//
-// post function goes here.
-//
-// Redirect to Step 3.
-
 // Render Step 3: Get cc info
 exports.show_company_enter_cc = function(req, res, next) {
 	var company = req.params.company;
@@ -65,21 +53,16 @@ exports.show_company_enter_cc = function(req, res, next) {
 	res.render('placeholder', { url : url } );
 }
 
-exports.process_cc = function(req, res, next) {
+// Process cc info.
+exports.process_company_cc = function(req, res, next) {
 	var company = req.params.company;
 	var next_url = "/o" + '/' + company + "/setup_profile";
 
 	res.redirect(next_url);
 }
 
-// Process cc info.
-//
-// post function, stripe call etc. goes here.
-//
-// Redirect to Step 4
-
 // Render Step 4: Set up profile, populate fields.
-exports.show_company_setup_profile = function(req, res, next) {
+exports.show_company_edit_profile = function(req, res, next) {
 	res.render('setup_profile');
 }
 
@@ -90,33 +73,21 @@ exports.update_company_profile = function(req, res, next) {
 	res.redirect('/o' + '/' + company + '/invite_authors');
 }
 
-// Update profile model.
-//
-// post function goes here.
-//
-// Redirect to Step 5
-
 // Render Step 5: Invite authors
 exports.show_company_invite_authors = function(req, res, next) {
 	res.render('invite_authors');
 }
 
+// Email authors requesting sign up. Add them to Author pending table.
 exports.process_company_invite_authors = function(req, res, next) {
 	var company = req.params.company;
+
+	// Redirect to company home page.
 
 	res.redirect('/c' + '/' + company);
 }
 
-// Email authors requesting sign up. Add them to Author pending table.
-//
-// Post function goes here. Email, add to database.
-//
-// Redirect to /c/:company
-
-
-//
 // Regular user sign up
-//
 exports.show_user_signup = function(req, res, next) {
 	res.render('user_signup');
 }
@@ -125,38 +96,53 @@ exports.show_user_signup = function(req, res, next) {
 // Sign up via invites
 //
 
-//
-// Regular user signs up and joins company.
-//
-// This is the route user takes with a company invite.
-exports.show_user_signup_company_invite = function(req, res, next) {
+// Show user sign up via invite form
+exports.show_signup_via_company_invite = function(req, res, next) {
 
 	// Get company, populate invite data.
 
 	res.render('user_signup_company_invite');
 }
 
-//
-// Regular user signs up and becomes friends with invitor.
-//
-// This is the route user takes with a friend invite.
-//
-exports.show_user_signup_friend_invite = function(req, res, next) {
+// User signs up and joins company.
+exports.create_user_add_company = function(req, res, next) {
+
+	// Get company, populate invite data.
+
+	res.render('user_signup_company_invite');
+}
+
+
+// Show user sign up via friend invite form.
+exports.show_signup_via_friend_invite = function(req, res, next) {
 	
 	// Get friend, populate its data.
-
 	res.render('user_signup_friend_invite');
 }
 
 
-// Pick topics for user
+// User signs up and becomes friends with invitor.
+exports.create_user_add_friend = function(req, res, next) {
+	
+	// Create user, find friend, add: Friend relationship to both.
+
+	res.render('user_signup_friend_invite');
+}
+
+// Show topic selection form
 exports.show_user_pick_topics = function(req, res, next) {
 	
 	// Get friend, populate its data.
-
 	res.render('show_user_pick_topics');
 }
 
+// Set topics
+exports.update_user_pick_topics = function(req, res, next) {
+	
+	// Get user, get topics, Add: User follows topics.
+
+	res.render('show_user_pick_topics');
+}
 
 // Pick blogs to follow
 exports.show_user_pick_blogs = function(req, res, next) {
@@ -167,12 +153,18 @@ exports.show_user_pick_blogs = function(req, res, next) {
 }
 
 
-
-
-exports.show_login = function(req, res, next) {
+// Update blogs
+exports.update_user_blogs = function(req, res, next) {
 	
-	// Login page for everyone. We could customize it up a bit
-	// for companies.
+	// Get user, get blogs. Add: User follows blogs. Redirect to User hhome.
+
+	res.render('show_user_pick_blogs');
+}
+
+// Post
+exports.login = function(req, res, next) {
+	
+	// Establish session, redirect to user home page.
 
 	res.render('login');
 }
