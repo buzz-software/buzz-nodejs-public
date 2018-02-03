@@ -11,6 +11,8 @@ var session = require('express-session');
 var main_routes = require('./routes/main');
 var onboard = require('./routes/onboard');
 
+//var onboard = require('./onboard');
+
 // Passport stuff
 var session = require('express-session');
 var passport = require('passport'), LocalStrategy = require('passport-local').Strategy;
@@ -95,7 +97,7 @@ app.use(function(req, res, next) {
 
 // #### All of our routes ####
 app.use('/', main_routes);
-app.use('/o', onboard);
+app.use('/', onboard);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

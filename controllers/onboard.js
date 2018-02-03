@@ -6,18 +6,21 @@
  * who sign up via a company join invite, or invite of a friend.
  * 
  */
-urls = require("../routes/urls/onboard.js");
+//urls = require("../routes/urls/onboard.js");
+
+var company_seed = "test_company";
 
 // Render Step 1: New company form
 exports.show_company_signup = function(req, res, next) {
-	var url = urls.signup;
-
-	res.render('placeholder', { url : url } );
+	res.render('placeholder', { url : "/o/company_signup" } );
 }
 
-// Render Step 1: New company form
+// Create new company
 exports.create_company = function(req, res, next) {
-	res.redirect(urls.pick_plan);
+	// As if form is read and company_seed obtained.
+	console.log("Redirecting to:", req.baseUrl + '/' + company_seed + "/pick_plan");
+
+	res.redirect("/o" + "/" + company_seed + "/pick_plan");
 }
 
 
@@ -29,9 +32,23 @@ exports.create_company = function(req, res, next) {
 
 // Render Step 2: Pick a plan
 exports.show_company_pick_plan = function(req, res, next) {
-	var url = urls.pick_plan;
+
+	var company = req.params.company;
+
+	var url = "/o" + '/' + company + "/pick_plan";
 
 	res.render('placeholder', { url : url } );
+}
+
+// Create new Stripe plan
+exports.create_plan = function(req, res, next) {
+	var company = req.params.company;
+
+	var next_url = "/o" + "/" + company + "/enter_cc";
+
+	console.log("Redirecting to:", next_url);
+ 
+	res.redirect(next_url);
 }
 
 // Create plan and populate it. Redirect to Step 3.
@@ -42,9 +59,17 @@ exports.show_company_pick_plan = function(req, res, next) {
 
 // Render Step 3: Get cc info
 exports.show_company_enter_cc = function(req, res, next) {
-	var url = urls.enter_cc;
+	var company = req.params.company;
+	var url = "/o" + '/' + company + "/enter_cc";
 
 	res.render('placeholder', { url : url } );
+}
+
+exports.process_cc = function(req, res, next) {
+	var company = req.params.company;
+	var next_url = "/o" + '/' + company + "/setup_profile";
+
+	res.redirect(next_url);
 }
 
 // Process cc info.
@@ -58,6 +83,13 @@ exports.show_company_setup_profile = function(req, res, next) {
 	res.render('setup_profile');
 }
 
+// Render Step 4: Set up profile, populate fields.
+exports.update_company_profile = function(req, res, next) {
+	var company = req.params.company;
+
+	res.redirect('/o' + '/' + company + '/invite_authors');
+}
+
 // Update profile model.
 //
 // post function goes here.
@@ -67,6 +99,12 @@ exports.show_company_setup_profile = function(req, res, next) {
 // Render Step 5: Invite authors
 exports.show_company_invite_authors = function(req, res, next) {
 	res.render('invite_authors');
+}
+
+exports.process_company_invite_authors = function(req, res, next) {
+	var company = req.params.company;
+
+	res.redirect('/c' + '/' + company);
 }
 
 // Email authors requesting sign up. Add them to Author pending table.
