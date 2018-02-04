@@ -10,8 +10,8 @@ var session = require('express-session');
 // Routes
 var main_routes = require('./routes/main');
 var onboard = require('./routes/onboard');
-
-//var onboard = require('./onboard');
+var user = require('./routes/user');
+var company = require('./routes/company');
 
 // Passport stuff
 var session = require('express-session');
@@ -98,6 +98,8 @@ app.use(function(req, res, next) {
 // #### All of our routes ####
 app.use('/', main_routes);
 app.use('/', onboard);
+app.use('/', user);
+app.use('/', company);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -3,30 +3,6 @@
 // User routes
 //
 
-exports.show_settings_profile = function(req, res, next) {
-	res.render('user_settings_profile');
-}
-
-
-exports.show_settings_account = function(req, res, next) {
-	res.render('user_settings_account');
-}
-
-
-exports.show_settings_notifs = function(req, res, next) {
-	res.render('user_settings_notifs');
-}
-
-
-exports.show_settings_blogs = function(req, res, next) {
-	res.render('user_settings_blogs');
-}
-
-
-exports.show_settings_prefs = function(req, res, next) {
-	res.render('user_settings_prefs');
-}
-
 
 // Get user
 //
@@ -74,6 +50,48 @@ exports.fetch_notifs = function(req, res, next) {
 }
 
 
+//
+// User Settings
+//
+exports.show_settings_profile = function(req, res, next) {
+	res.render('user_settings_profile');
+}
+exports.update_settings_profile = function(req, res, next) {
+	res.render('user_settings_profile');
+}
+
+exports.show_settings_account = function(req, res, next) {
+	res.render('user_settings_account');
+}
+
+exports.update_settings_account = function(req, res, next) {
+	res.render('user_settings_account');
+}
+
+exports.show_settings_notifs = function(req, res, next) {
+	res.render('user_settings_notifs');
+}
+
+exports.update_settings_notifs = function(req, res, next) {
+	res.render('user_settings_notifs');
+}
+
+exports.show_settings_blogs = function(req, res, next) {
+	res.render('user_settings_blogs');
+}
+exports.update_settings_blogs = function(req, res, next) {
+	res.render('user_settings_blogs');
+}
+
+exports.show_settings_prefs = function(req, res, next) {
+	res.render('user_settings_prefs');
+}
+
+exports.update_settings_prefs = function(req, res, next) {
+	res.render('user_settings_prefs');
+}
+
+
 // Public user profile
 exports.show_profile = function(req, res, next) {
 	// Get user and everything about him/her
@@ -86,6 +104,10 @@ exports.show_invite_friends = function(req, res, next) {
 	res.render('user_invite_friends');
 }
 
+// Send email, update pending list.
+exports.process_invite_friends = function(req, res, next) {
+	res.render('user_invite_friends');
+}
 
 
 
