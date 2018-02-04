@@ -39,7 +39,10 @@ exports.accept_join = function(req, res, next) {
 	// Fetch user, fetch current company. Add: User author of company + any other privs.
 }
 
-
+// Triggers when logged in user accepts invite, add him/her to company authors.
+exports.remove_user = function(req, res, next) {
+	// Fetch user, fetch current company. Remove user from company.
+}
 
 //
 // Settings routes

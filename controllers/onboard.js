@@ -1,3 +1,4 @@
+var passport = require('passport');
 
 /*
  * Onboarding module for both companies and users.
@@ -84,12 +85,19 @@ exports.process_company_invite_authors = function(req, res, next) {
 
 	// Redirect to company home page.
 
+	// Actually before we do this we must create 1 user in the company as well. Or do you log in as a company?
+	// I think it is better if a company has member users one of which is an owner or has more privileges.
 	res.redirect('/c' + '/' + company);
 }
 
 // Regular user sign up
 exports.show_user_signup = function(req, res, next) {
 	res.render('user_signup');
+}
+
+// Sign up user
+exports.create_user = function(req, res, next) {
+	res.redirect('');
 }
 
 //
@@ -109,7 +117,7 @@ exports.create_user_add_company = function(req, res, next) {
 
 	// Get company, populate invite data.
 
-	res.render('user_signup_company_invite');
+	res.redirect('');
 }
 
 
@@ -126,7 +134,7 @@ exports.create_user_add_friend = function(req, res, next) {
 	
 	// Create user, find friend, add: Friend relationship to both.
 
-	res.render('user_signup_friend_invite');
+	res.redirect('');
 }
 
 // Show topic selection form
@@ -137,11 +145,10 @@ exports.show_user_pick_topics = function(req, res, next) {
 }
 
 // Set topics
-exports.update_user_pick_topics = function(req, res, next) {
+exports.update_user_topics = function(req, res, next) {
 	
 	// Get user, get topics, Add: User follows topics.
 
-	res.render('show_user_pick_topics');
 }
 
 // Pick blogs to follow
@@ -158,7 +165,12 @@ exports.update_user_blogs = function(req, res, next) {
 	
 	// Get user, get blogs. Add: User follows blogs. Redirect to User hhome.
 
-	res.render('show_user_pick_blogs');
+	res.redirect('');
+}
+
+// All users login through here.
+exports.show_login = function(req, res, next) {
+	res.render('user_signup');
 }
 
 // Post
@@ -166,7 +178,7 @@ exports.login = function(req, res, next) {
 	
 	// Establish session, redirect to user home page.
 
-	res.render('login');
+	res.redirect('');
 }
 
 

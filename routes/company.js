@@ -7,8 +7,9 @@ router.get('/c/:company', company.show_home);	// Company public home page.
 
 // Company manage invites, acceptances
 router.get('/c/:company/invite_authors', company.show_invite_authors);	// Company inviting authors
-router.get('/c/:company/accept_join', company.accept_invited_user);		// Add invited user to company.
+router.get('/c/:company/u/:username/accept_join', company.accept_join);		// Add invited user to company.
 
+router.post('/c/:company/u/:username/remove', company.remove_user);  // Remove user from company.
 
 // Company settings routes
 router.get('/c/:company/s/stories', company.show_settings_stories);	// Company story settings
@@ -41,3 +42,6 @@ router.get('/c/:company/p/:page_slug', company.show_page);				// Show page
 router.get('/c/:company/p/:page_slug/edit_page', company.edit_page);		// Get page for edit
 router.post('/c/:company/p/:page_slug/edit_page', company.update_page);		// Update page
 router.post('/c/:company/p/:page_slug/delete_page', company.delete_page);	// Delete page
+
+
+module.exports = router;

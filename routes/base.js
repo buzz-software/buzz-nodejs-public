@@ -1,9 +1,8 @@
 var express = require('express');
 var router = express.Router();
-var passport = require('passport');
+
 
 // Controllers
-var signup = require('../controllers/signup.js');
 var base = require('../controllers/base.js');
 
 // Base pages for entire app

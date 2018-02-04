@@ -15,8 +15,8 @@ router.get('/o/:company/enter_cc', onboard.show_company_enter_cc);
 router.post('/o/:company/enter_cc', onboard.process_company_cc);
 router.get('/o/:company/setup_profile', onboard.show_company_edit_profile);
 router.post('/o/:company/setup_profile', onboard.update_company_profile);
-router.get('/o/:company/invite_authors', onboard.show_company_invite);
-router.post('/o/:company/invite_authors', onboard.process_company_invite);
+router.get('/o/:company/invite_authors', onboard.show_company_invite_authors);
+router.post('/o/:company/invite_authors', onboard.process_company_invite_authors);
 
 // Onboarding for individuals
 router.get('/o/user_signup', onboard.show_user_signup);
