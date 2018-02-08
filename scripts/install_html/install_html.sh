@@ -84,18 +84,18 @@ cp $repo/settings-notifications.html $user_settings
 cp $repo/settings-preferences.html $user_settings
 cp $repo/settings-publications.html $user_settings
 
-js=$project_root/public/javascripts/
-css=$project_root/public/stylesheets/
+js=$project_root/public/javascripts
+css=$project_root/public/stylesheets
 img=$project_root/public/images
 
 # A unique subdir to install images.
 img_install_subdir=$img/ui
 
 # References to images from stylesheets
-img_sym_1=$css/img
+img_sym1=$css/img
 
 # All files refer to project_root/img for images.
-img_sym_2=$project_root/public/img
+img_sym2=$project_root/public/img
 
 # copy images
 if [[ ! -e $img_install_subdir ]]; then
@@ -122,10 +122,9 @@ cp -a $repo/lib/css/* $css/lib/
 
 # Image symlinks.
 if [[ ! -e $img_sym1 ]]; then
-	echo `ln -s $img_install_subdir $img_sym1`
 	ln -s $img_install_subdir $img_sym1 
 fi
 if [[ ! -e $img_sym2 ]]; then
-	echo `ln -s $img_install_subdir $img_sym1 `
-	ln -s $img_install_subdir $img_sym1  
+
+	ln -s $img_install_subdir $img_sym2  
 fi
