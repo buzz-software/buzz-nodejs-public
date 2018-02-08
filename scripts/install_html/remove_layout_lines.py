@@ -1,8 +1,8 @@
-#! /usr/local/bin/python3
+#!/usr/bin/env python3
 
 # Import the os module, for the os.walk function
 import os, pathlib, sys
- 
+
 # Set the directory you want to start from
 rootDir = './pug'
 
@@ -11,7 +11,7 @@ rootDir= sys.argv[1]
 print ("Pug conversion path: %s" % rootDir)
 
 for dirName, subdirList, fileList in os.walk(rootDir):
-	print('Found directory: %s' % dirName)	
+	print('Found directory: %s' % dirName)
 	for fname in fileList:
 		if fname.endswith("pug"):
 			print("%s" % fname)
