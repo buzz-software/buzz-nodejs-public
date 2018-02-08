@@ -18,13 +18,13 @@ Usage:	./do_all <html_repo_path> <html_install_location>
     exit
 fi
 
-pugdir = $project_root/views/pages
-repo_dir = $1
-html_dir = $2
+pugdir=$project_root/views/pages
+repo_dir=$1
+html_dir=$2
 
 
 # Install html files, css, js, image files in right places.
-./install_html_repo.sh $repo_dir $html_dir
+$SCRIPT_DIR/install_html.sh $repo_dir $html_dir
 
 rm -rf $pugdir
 
@@ -32,7 +32,11 @@ rm -rf $pugdir
 cp -a $html_dir $pugdir
 
 # Convert it to pug
-./convert_html_to_pug.py $pugdir
+$SCRIPT_DIR/convert_html_to_pug.py $pugdir
 
 # Remove common lines in pug files. These are already in layout.pug
-./remove_layout_lines.py $pugdir
+$SCRIPT_DIR/remove_layout_lines.py $pugdir
+
+# Copy layout file to pug directory.
+
+cp $project_root/views/layout.pug $pugdir
