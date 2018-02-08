@@ -1,6 +1,9 @@
 {
   "name": "buzz",
   "version": "0.0.1",
+  "engines": {
+    "node": "8.9.4"
+  },
   "description": "Buzz",
   "main": "app.js",
   "private": true,
