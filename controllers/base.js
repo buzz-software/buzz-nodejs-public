@@ -8,20 +8,20 @@
 // Get latest stories
 // Get total number of communities
 exports.show_landing = function(req, res, next) {
-	res.render('base/home');
+	res.render('pages/base/home');
 }
 
 // Get posts, people, companies, tags.
 // Filter by latest and highest score
 // Display.
 exports.show_discover = function(req, res, next) {
-	res.render('base/discover');
+	res.render('pages/base/discover');
 }
 
 exports.show_search = function(req, res, next) {
-	res.render('search');
+	res.render('pages/search');
 }
 
 exports.show_results = function(req, res, next) {
-	res.render('base/search-results');
+	res.render('pages/base/search-results');
 }

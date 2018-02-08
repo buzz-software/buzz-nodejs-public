@@ -8,7 +8,7 @@ rootDir = './pug'
 
 rootDir= sys.argv[1]
 
-print ("Pug conversion path: %s" %s rootDir)
+print ("Pug conversion path: %s" % rootDir)
 
 for dirName, subdirList, fileList in os.walk(rootDir):
 	print('Found directory: %s' % dirName)	

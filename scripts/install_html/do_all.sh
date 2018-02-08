@@ -1,14 +1,30 @@
 #!/bin/bash
 
+# Copies mizko flat hierarchy files to project hierarchy.
 
-project_root=../..
+SCRIPT_DIR=$( cd "$( dirname "${BASH_SOURCE[0]}" )" && pwd )
 
-pugdir = $project_root/views/pug
-html_dir = $project_root/views/html
-repo_dir = $project_root/views/buzz-html
+project_root=$SCRIPT_DIR/../..
+
+if [ -z "$1" ]
+  then
+    echo "
+Usage:	./do_all <html_repo_path> <html_install_location>
+
+	Example:
+
+	./do_all buzz-html views/html
+"
+    exit
+fi
+
+pugdir = $project_root/views/pages
+repo_dir = $1
+html_dir = $2
+
 
 # Install html files, css, js, image files in right places.
-./install_html_repo.sh $project_root $repo_dir $html_dir
+./install_html_repo.sh $repo_dir $html_dir
 
 rm -rf $pugdir
 
