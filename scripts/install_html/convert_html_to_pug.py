@@ -3,6 +3,11 @@
 # Import the os module, for the os.walk function
 import os, pathlib, sys
 
+# Check if html2pug is installed
+if os.system('html2pug --version') != 0:
+    print('html2pug package not installed. Get it on npm: https://www.npmjs.com/package/html2pug')
+    exit()
+
 # Set the directory you want to start from
 rootDir = './views/pug'
 
